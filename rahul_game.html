@@ -1,0 +1,113 @@
+<head>
+<title>Game of life</title>
+</head>
+<body>
+<center>
+<canvas id="d" width="500" height="500"></canvas>
+</center>
+<script>
+
+var gol_canvas = document.getElementById("d");
+var gol_context = gol_canvas.getContext("2d");
+var size=20;
+var block_num=25;
+var arry_block = new Array(block_num);
+var arry_block_copy = new Array(block_num);
+var delay=400;
+var rand_x,rand_y;
+for(var i=0;i<block_num;i++){
+arry_block [i]=new Array(block_num);
+arry_block_copy[i]=new Array(block_num);
+}
+for (i = 0; i < block_num; i++){
+           for (j = 0; j < block_num; j++){
+  arry_block [i][j]=0;
+  arry_block_copy[i][j]=0;
+           }
+}
+for(var i=0;i<25;i++){
+rand_x = Math.floor(Math.random()*block_num);
+rand_y = Math.floor(Math.random()*block_num);
+arry_block [rand_x][rand_y]=1;
+}
+for (var x=11;x<18;x+=1)
+   for (var y=11;y<18;y+=1)
+     { 
+        arry_block [x][y]=1;
+     }
+arry_block [20][8]=1;
+arry_block [20][10]=1;
+arry_block [20][9]=1;
+draw_block();
+
+setTimeout("gol()",delay);
+
+function gol(){
+        var counter_no = 0,i,j;
+        
+        for (i = 0; i < block_num; i++){
+           for (j = 0; j < block_num; j++){
+            counter_no = count(i,j);
+                if(arry_block [i][j]==1)
+                {
+                 if(counter_no==2||counter_no==3)
+                 arry_block_copy[i][j]=1;
+                 else
+                 arry_block_copy[i][j]=0;
+                }
+         else
+         {
+         if(counter_no==3)
+         arry_block_copy[i][j]=1;
+         else
+         arry_block_copy[i][j]=0;
+         }
+              }
+           }
+          
+       for (i = 0; i < block_num; i++)
+             for (j = 0; j < block_num; j++)
+         arry_block [i][j]=arry_block_copy[i][j];
+        
+      draw_block();
+        
+           setTimeout("gol()",400);
+}
+function draw_block(){
+
+for(var i=0;i<block_num;i++){
+
+for(var j=0;j<block_num;j++){
+
+if(arry_block [i][j]==0){
+gol_context.fillStyle="#EEE";}
+else{
+gol_context.fillStyle="#000";}
+
+gol_context.fillRect(i*size,j*size,size-2,size-2);
+
+}
+
+}
+
+}
+function count(m, n)
+{
+
+                        var count_live_cell = 0;
+                        for(var i=m-1;i<=m+1;i++)
+                        {
+                         for(var j=n-1;j<=n+1;j++)
+                        
+                         {
+                        
+                         if(arry_block [i]!=undefined && arry_block [i][j]===1)
+                         count_live_cell++;
+                        
+                         }
+                        }
+                                             
+                        return count_live_cell - arry_block [m][n];
+}
+</script>
+</body>
